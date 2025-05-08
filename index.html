@@ -64,9 +64,46 @@
       color: #b79a8a;
       font-style: italic;
     }
+      .cooldown {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #8b3f2c;
+      color: #fffaf5;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.9em;
+      animation: fadeOut 5s forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+  <style>
+    .exit-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #bb6f51;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .exit-button:hover {
+      background-color: #a1543e;
+    }
   </style>
 </head>
 <body>
+  <button class="exit-button" onclick="confirmExit()">×</button>
   <h1 style="text-align:center; font-weight:normal; font-size:1.8em; margin-top:30px;">Literary Kitchen</h1>
   <p style="text-align:center; font-size:1em; color:#6a4633; margin-top:5px;">掃描你的文學風味，每一種類型都是一種角色與味覺的交會。</p>
   <div id="qr-reader"></div>
@@ -86,6 +123,21 @@
   </div>
 
   <script>
+    function confirmExit() {
+      if (confirm("是否要放棄本次烹飪？")) {
+        ["A", "B", "C"].forEach(type => {
+          const column = document.getElementById("column-" + type);
+          column.querySelectorAll(".item, .cooldown").forEach(el => el.remove());
+          const placeholder = document.createElement("div");
+          placeholder.id = "placeholder-" + type;
+          placeholder.className = "placeholder";
+          placeholder.textContent = "尚未掃描";
+          column.appendChild(placeholder);
+        });
+        scannedTypes.clear();
+      }
+    }
+
     const scannedTypes = new Set();
 
     function renderItem(data) {
@@ -99,30 +151,50 @@
       target.appendChild(div);
     }
 
-    const scanner = new Html5QrcodeScanner("qr-reader", {
-      fps: 10,
-      qrbox: 250,
-    });
+    const scanner = new Html5Qrcode("qr-reader");
 
-    scanner.render((decodedText) => {
-      try {
-        const obj = JSON.parse(decodedText);
-        if (!obj.type || !obj.name) return;
+    scanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      (decodedText) => {
+        try {
+          const obj = JSON.parse(decodedText);
+          if (!obj.type || !obj.name) return;
 
-        if (scannedTypes.has(obj.type)) {
-          alert("TYPE " + obj.type + " 已經掃過了！");
-          return;
+          if (scannedTypes.has(obj.type)) {
+            alert("TYPE " + obj.type + " 已在 5 秒內掃描過，請稍候再試...");
+            return;
+          }
+
+          const column = document.getElementById("column-" + obj.type);
+          const countdown = document.createElement("div");
+          countdown.className = "cooldown";
+          countdown.textContent = "冷卻中 5 秒";
+          column.appendChild(countdown);
+
+          let secondsLeft = 5;
+          const interval = setInterval(() => {
+            secondsLeft--;
+            if (secondsLeft > 0) {
+              countdown.textContent = `冷卻中 ${secondsLeft} 秒`;
+            } else {
+              clearInterval(interval);
+              countdown.remove();
+            }
+          }, 1000);
+
+          scannedTypes.add(obj.type);
+          renderItem(obj);
+          setTimeout(() => scannedTypes.delete(obj.type), 5000);
+
+        } catch (e) {
+          alert("解析 QRCode 錯誤：" + e.message);
         }
-
-        scannedTypes.add(obj.type);
-        renderItem(obj);
-
-      } catch (e) {
-        alert("解析 QRCode 錯誤：" + e.message);
+      },
+      (error) => {
+        // 掃描錯誤忽略
       }
-    }, (error) => {
-      // 忽略掃描錯誤
-    });
+    );
   </script>
 </body>
 </html>
