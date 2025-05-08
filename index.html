@@ -169,18 +169,19 @@
       const obj = JSON.parse(decodedText);
       if (!obj.type || !obj.name) return;
       if (document.querySelector(`#column-${obj.type} .item`)) {
-        const item = document.querySelector(`#column-${obj.type} .item`);
-        item.classList.add("flash");
-        setTimeout(() => item.classList.remove("flash"), 1000);
-        return;
-      }
+  const item = document.querySelector(`#column-${obj.type} .item`);
+  item.classList.add("flash");
+  setTimeout(() => item.classList.remove("flash"), 1000);
+  return;
+}
+
       renderItem(obj);
     } catch (e) {
       console.error("解析 QRCode 錯誤：", e);
     }
   }, (error) => {
     // 掃描錯誤可忽略喔
-    
+
   });
 </script>
 </body>
