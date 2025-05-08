@@ -123,79 +123,49 @@
   </div>
 
   <script>
-    function confirmExit() {
-      if (confirm("是否要放棄本次烹飪？")) {
-        ["A", "B", "C"].forEach(type => {
-          const column = document.getElementById("column-" + type);
-          column.querySelectorAll(".item, .cooldown").forEach(el => el.remove());
-          const placeholder = document.createElement("div");
-          placeholder.id = "placeholder-" + type;
-          placeholder.className = "placeholder";
-          placeholder.textContent = "尚未掃描";
-          column.appendChild(placeholder);
-        });
-        scannedTypes.clear();
-      }
+  function confirmExit() {
+    if (confirm("是否要放棄本次烹飪？")) {
+      ["A", "B", "C"].forEach(type => {
+        const column = document.getElementById("column-" + type);
+        column.querySelectorAll(".item").forEach(el => el.remove());
+        const placeholder = document.createElement("div");
+        placeholder.id = "placeholder-" + type;
+        placeholder.className = "placeholder";
+        placeholder.textContent = "尚未掃描";
+        column.appendChild(placeholder);
+      });
     }
+  }
 
-    const scannedTypes = new Set();
+  function renderItem(data) {
+    const target = document.getElementById("column-" + data.type);
+    const placeholder = document.getElementById("placeholder-" + data.type);
+    if (placeholder) placeholder.remove();
 
-    function renderItem(data) {
-      const target = document.getElementById("column-" + data.type);
-      const placeholder = document.getElementById("placeholder-" + data.type);
-      if (placeholder) placeholder.remove();
+    const div = document.createElement("div");
+    div.className = "item";
+    div.textContent = data.name;
+    target.appendChild(div);
+  }
 
-      const div = document.createElement("div");
-      div.className = "item";
-      div.textContent = data.name;
-      target.appendChild(div);
+  let isCooldown = false;
+  const scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+
+  scanner.render((decodedText) => {
+    if (isCooldown) return;
+    isCooldown = true;
+    setTimeout(() => isCooldown = false, 5000);
+
+    try {
+      const obj = JSON.parse(decodedText);
+      if (!obj.type || !obj.name) return;
+      renderItem(obj);
+    } catch (e) {
+      console.error("解析 QRCode 錯誤：", e);
     }
-
-    const scanner = new Html5Qrcode("qr-reader");
-
-    scanner.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: 250 },
-      (decodedText) => {
-        try {
-          const obj = JSON.parse(decodedText);
-          if (!obj.type || !obj.name) return;
-
-          if (scannedTypes.has(obj.type)) {
-          // TYPE 已在冷卻中，自動忽略，不顯示 alert
-          return;
-        }
-          }
-
-          const column = document.getElementById("column-" + obj.type);
-          const countdown = document.createElement("div");
-          countdown.className = "cooldown";
-          countdown.textContent = "冷卻中 5 秒";
-          column.appendChild(countdown);
-
-          let secondsLeft = 5;
-          const interval = setInterval(() => {
-            secondsLeft--;
-            if (secondsLeft > 0) {
-              countdown.textContent = `冷卻中 ${secondsLeft} 秒`;
-            } else {
-              clearInterval(interval);
-              countdown.remove();
-            }
-          }, 1000);
-
-          scannedTypes.add(obj.type);
-          renderItem(obj);
-          setTimeout(() => scannedTypes.delete(obj.type), 5000);
-
-        } catch (e) {
-          alert("解析 QRCode 錯誤：" + e.message);
-        }
-      },
-      (error) => {
-        // 掃描錯誤忽略
-      }
-    );
-  </script>
+  }, (error) => {
+    // 掃描錯誤可忽略
+  });
+</script>
 </body>
 </html>
