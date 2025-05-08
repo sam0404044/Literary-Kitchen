@@ -162,8 +162,9 @@
           if (!obj.type || !obj.name) return;
 
           if (scannedTypes.has(obj.type)) {
-            alert("TYPE " + obj.type + " 已在 5 秒內掃描過，請稍候再試...");
-            return;
+          // TYPE 已在冷卻中，自動忽略，不顯示 alert
+          return;
+        }
           }
 
           const column = document.getElementById("column-" + obj.type);
