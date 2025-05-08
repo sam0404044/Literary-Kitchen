@@ -80,6 +80,15 @@
       0% { opacity: 1; }
       100% { opacity: 0; }
     }
+      .item.flash {
+      animation: flash 1s ease-in-out;
+    }
+
+    @keyframes flash {
+      0% { background-color: #ffd9d0; }
+      50% { background-color: #fce2d4; }
+      100% { background-color: #ffd9d0; }
+    }
   </style>
   <style>
     .exit-button {
@@ -159,6 +168,12 @@
     try {
       const obj = JSON.parse(decodedText);
       if (!obj.type || !obj.name) return;
+      if (document.querySelector(`#column-${obj.type} .item`)) {
+        const item = document.querySelector(`#column-${obj.type} .item`);
+        item.classList.add("flash");
+        setTimeout(() => item.classList.remove("flash"), 1000);
+        return;
+      }
       renderItem(obj);
     } catch (e) {
       console.error("解析 QRCode 錯誤：", e);
