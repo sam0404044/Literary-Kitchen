@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>Literary Kitchen</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body {
+      font-family: "Noto Serif TC", serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fcf4f0;
+      color: #4a2b23;
+    }
+
+    #qr-reader {
+      width: 60vw;
+      max-width: 600px;
+      margin: 30px auto;
+    }
+
+    .columns {
+      display: flex;
+      justify-content: center;
+      padding: 30px;
+      gap: 20px;
+    }
+
+    .column {
+      flex: 1;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff1ec;
+      border: 2px solid #d9a88c;
+      min-height: 250px;
+      max-width: 100%;
+      width: 30vw;
+      position: relative;
+    }
+
+    .column h3 {
+      text-align: center;
+      border-bottom: 2px dashed #bb6f51;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      font-size: 1.2em;
+      color: #8b3f2c;
+    }
+
+    .item {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #fce2d4;
+      border: 1px solid #d99977;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .placeholder {
+      text-align: center;
+      color: #b79a8a;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center; font-weight:normal; font-size:1.8em; margin-top:30px;">Literary Kitchen</h1>
+  <p style="text-align:center; font-size:1em; color:#6a4633; margin-top:5px;">掃描你的文學風味，每一種類型都是一種角色與味覺的交會。</p>
+  <div id="qr-reader"></div>
+  <div class="columns">
+    <div class="column" id="column-A">
+      <h3>TYPE A</h3>
+      <div class="placeholder" id="placeholder-A">尚未掃描</div>
+    </div>
+    <div class="column" id="column-B">
+      <h3>TYPE B</h3>
+      <div class="placeholder" id="placeholder-B">尚未掃描</div>
+    </div>
+    <div class="column" id="column-C">
+      <h3>TYPE C</h3>
+      <div class="placeholder" id="placeholder-C">尚未掃描</div>
+    </div>
+  </div>
+
+  <script>
+    const scannedTypes = new Set();
+
+    function renderItem(data) {
+      const target = document.getElementById("column-" + data.type);
+      const placeholder = document.getElementById("placeholder-" + data.type);
+      if (placeholder) placeholder.remove();
+
+      const div = document.createElement("div");
+      div.className = "item";
+      div.textContent = data.name;
+      target.appendChild(div);
+    }
+
+    const scanner = new Html5QrcodeScanner("qr-reader", {
+      fps: 10,
+      qrbox: 250,
+    });
+
+    scanner.render((decodedText) => {
+      try {
+        const obj = JSON.parse(decodedText);
+        if (!obj.type || !obj.name) return;
+
+        if (scannedTypes.has(obj.type)) {
+          alert("TYPE " + obj.type + " 已經掃過了！");
+          return;
+        }
+
+        scannedTypes.add(obj.type);
+        renderItem(obj);
+
+      } catch (e) {
+        alert("解析 QRCode 錯誤：" + e.message);
+      }
+    }, (error) => {
+      // 忽略掃描錯誤
+    });
+  </script>
+</body>
+</html>
