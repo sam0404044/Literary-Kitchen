@@ -2,7 +2,7 @@
 
 ## Step by Step Refactoring Tasks
 
-- [ ] 1. 初始化 Vite + Vue 3 + TypeScript 專案架構
+- [x] 1. 初始化 Vite + Vue 3 + TypeScript 專案架構
     - 使用 Vite 建立新專案，選擇 Vue 3 + TypeScript 模板
     - 移除預設範例檔案，準備導入現有內容
 
