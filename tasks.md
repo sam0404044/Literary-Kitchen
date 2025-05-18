@@ -14,7 +14,7 @@
     - 安裝 Pinia
     - 設定專案入口與基本 store 架構
 
-- [ ] 4. 拆分 index.html 為 Vue 元件
+- [x] 4. 拆分 index.html 為 Vue 元件
     - 將 QRCode Reader、欄位群組、退出按鈕等區塊模組化為單獨 Vue component
     - 拆分樣式至獨立 CSS/SCSS 或 <style> 區塊
 
