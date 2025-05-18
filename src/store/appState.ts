@@ -83,9 +83,10 @@ export const useAppStateStore = defineStore("appState", {
     },
     selectByQr(type: string, value: string) {
       this.error = null;
+      const id = Number(value);
       if (type === "A") {
         const found = this.mainDishOptions.find(
-          (opt: MainDishText) => opt.main_dish === value,
+          (opt: MainDishText) => opt.id === id,
         );
         if (found) {
           this.selectedMainDish = found;
@@ -94,7 +95,7 @@ export const useAppStateStore = defineStore("appState", {
         }
       } else if (type === "B") {
         const found = this.sideDishOptions.find(
-          (opt: SideDishMedia) => opt.side_dish === value,
+          (opt: SideDishMedia) => opt.id === id,
         );
         if (found) {
           this.selectedSideDish = found;
@@ -103,7 +104,7 @@ export const useAppStateStore = defineStore("appState", {
         }
       } else if (type === "C") {
         const found = this.drinkStyleOptions.find(
-          (opt: DrinkStyle) => opt.drink === value,
+          (opt: DrinkStyle) => opt.id === id,
         );
         if (found) {
           this.selectedDrinkStyle = found;

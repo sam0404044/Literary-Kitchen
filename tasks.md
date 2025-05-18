@@ -40,8 +40,15 @@
 
 - [ ] 7. 撰寫單元測試（Vitest + Vue Test Utils）
 
-  - 安裝 Vitest、@vue/test-utils
-  - 撰寫至少一個元件的單元測試，mock API service
+  - [x] 安裝 Vitest、@vue/test-utils
+  - [x] 建立 `tests/unit/` 目錄與 Vitest 設定檔
+  - [x] QrReader.vue：撰寫基本渲染與互動測試
+  - [x] ExitButton.vue：撰寫點擊事件測試
+  - [x] FlavorColumn.vue：撰寫 props 與事件測試
+  - [x] FlavorColumns.vue：撰寫整合測試
+  - [x] SystemAlert.vue：撰寫顯示/隱藏測試
+  - [x] mock API service 行為
+  - [x] 整合 CI 測試指令（如 npm run test:unit）
 
 - [ ] 8. 驗證與優化
   - 執行 lint、format、單元測試，確保專案可正常運作
