@@ -1,36 +1,53 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAppStateStore } from './store/appState'
 import QrReader from './components/QrReader.vue'
 import ExitButton from './components/ExitButton.vue'
 import FlavorColumns from './components/FlavorColumns.vue'
+import SystemAlert from './components/SystemAlert.vue'
 
-type Item = { name: string, type: string, flash?: boolean }
+const appState = useAppStateStore()
+const { selectedMainDish, selectedSideDish, selectedDrinkStyle, error } = storeToRefs(appState)
 
-const columns = ref([
-  { type: 'A', title: 'TYPE A', items: [] as Item[] },
-  { type: 'B', title: 'TYPE B', items: [] as Item[] },
-  { type: 'C', title: 'TYPE C', items: [] as Item[] }
+onMounted(() => {
+  appState.fetchOptions()
+})
+
+const columns = computed(() => [
+  {
+    type: 'A',
+    title: '主食',
+    items: selectedMainDish.value ? [{ name: selectedMainDish.value.main_dish, flash: false }] : []
+  },
+  {
+    type: 'B',
+    title: '配餐',
+    items: selectedSideDish.value ? [{ name: selectedSideDish.value.side_dish, flash: false }] : []
+  },
+  {
+    type: 'C',
+    title: '飲品',
+    items: selectedDrinkStyle.value ? [{ name: selectedDrinkStyle.value.drink, flash: false }] : []
+  }
 ])
 
-function handleScan(obj: Item) {
-  const col = columns.value.find(c => c.type === obj.type)
-  if (!col) return
-  const exist = col.items.find(i => i.name === obj.name)
-  if (exist) {
-    exist.flash = true
-    setTimeout(() => exist.flash = false, 1000)
-    return
-  }
-  col.items.push({ name: obj.name, type: obj.type })
+function handleScan(obj: { type: string, name: string }) {
+  appState.selectByQr(obj.type, obj.name)
 }
 
 function resetAll() {
-  columns.value.forEach(col => col.items.splice(0, col.items.length))
+  appState.reset()
+}
+
+function closeAlert() {
+  appState.setError(null)
 }
 </script>
 
 <template>
   <div style="position:relative; min-height:100vh; background:#fcf4f0; color:#4a2b23;">
+    <SystemAlert v-if="error" :show="!!error" :message="error || ''" type="error" @close="closeAlert" />
     <ExitButton @resetAll="resetAll" />
     <h1 style="text-align:center; font-weight:normal; font-size:1.8em; margin-top:30px;">Literary Kitchen</h1>
     <p style="text-align:center; font-size:1em; color:#6a4633; margin-top:5px;">掃描你的文學風味，每一種類型都是一種角色與味覺的交會。</p>

@@ -9,8 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-const props = defineProps<{
+defineProps<{
   title: string
   items: Array<{ name: string, flash?: boolean }>
 }>()

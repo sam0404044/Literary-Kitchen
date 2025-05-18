@@ -8,7 +8,7 @@ import type {
   PrintJob,
   BarcodeMapping,
   BarcodeMappingCreate
-} from './api'
+} from '../api-types'
 
 // options.py
 export async function getMainDishList(): Promise<MainDishText[]> {
@@ -50,7 +50,7 @@ export async function getPrinterStatus(): Promise<{ status: string; description:
   return { status: 'mocked', description: 'Printer is mocked' }
 }
 
-export async function directPrint(text: string): Promise<{ ok: boolean; status: string }> {
+export async function directPrint(_text: string): Promise<{ ok: boolean; status: string }> {
   return { ok: true, status: 'mocked' }
 }
 
@@ -108,6 +108,6 @@ export async function createBarcodeMapping(data: BarcodeMappingCreate): Promise<
   }
 }
 
-export async function deleteBarcodeMapping(item_id: number): Promise<{ ok: boolean }> {
+export async function deleteBarcodeMapping(_item_id: number): Promise<{ ok: boolean }> {
   return { ok: true }
 }

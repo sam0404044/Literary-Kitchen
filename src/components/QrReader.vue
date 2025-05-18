@@ -11,7 +11,7 @@ const emit = defineEmits(["onScan"])
 onMounted(() => {
   // @ts-ignore
   import('html5-qrcode').then(({ Html5QrcodeScanner }) => {
-    scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 })
+    scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 }, false)
     scanner.render((decodedText: string) => {
       if (isCooldown) return
       isCooldown = true

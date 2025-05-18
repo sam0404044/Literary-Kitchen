@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <FlavorColumn
-      v-for="(col, idx) in columns"
+      v-for="col in columns"
       :key="col.type"
       :title="col.title"
       :items="col.items"
@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import FlavorColumn from './FlavorColumn.vue'
-const props = defineProps<{
+defineProps<{
   columns: Array<{ type: string, title: string, items: Array<{ name: string, flash?: boolean }> }>
 }>()
 </script>

@@ -2,84 +2,31 @@
 
 const API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
-// Data Types
-export interface MainDishText {
-  id: number;
-  author_name: string;
-  work_title: string;
-  main_dish: string;
-  publisher: string;
-  genre: string;
-  description?: string;
-}
-
-export interface SideDishMedia {
-  id: number;
-  media_type: string;
-  side_dish: string;
-}
-
-export interface DrinkStyle {
-  id: number;
-  style: string;
-  drink: string;
-}
-
-export interface TextVariant {
-  id: number;
-  main_dish_text_id: number;
-  side_dish_media_id: number;
-  drink_style_id: number;
-  content: string;
-  variant_index: number;
-  length: number;
-  approved: boolean;
-  created_at: string;
-  print_count: number;
-}
-
-export interface PrintJob {
-  id?: number;
-  text_variant_id: number;
-  status: string;
-  created_at: string;
-}
-
-export interface BarcodeMapping {
-  id: number;
-  barcode: string;
-  main_dish_text_id?: number;
-  side_dish_media_id?: number;
-  drink_style_id?: number;
-  description?: string;
-  created_at: string;
-}
-
-export interface BarcodeMappingCreate {
-  barcode: string;
-  main_dish_text_id?: number;
-  side_dish_media_id?: number;
-  drink_style_id?: number;
-  description?: string;
-}
-
-const API_DOMAIN = import.meta.env.VITE_API_DOMAIN
+import type {
+  MainDishText,
+  SideDishMedia,
+  DrinkStyle,
+  TextVariant,
+  PrintJob,
+  BarcodeMapping,
+  BarcodeMappingCreate
+} from './api-types'
 
 // options.py
 export async function getMainDishList(): Promise<MainDishText[]> {
-  const resp = await fetch(`${API_DOMAIN}/maindish`)
+  const resp = await fetch(`${API_DOMAIN}/options/maindish`)
   if (!resp.ok) throw new Error(`API error: ${resp.status}`)
   return resp.json()
 }
 
 export async function getSideDishList(): Promise<SideDishMedia[]> {
-  const resp = await fetch(`${API_DOMAIN}/sidedish`)
+  const resp = await fetch(`${API_DOMAIN}/options/sidedish`)
   if (!resp.ok) throw new Error(`API error: ${resp.status}`)
   return resp.json()
 }
 
 export async function getDrinkStyleList(): Promise<DrinkStyle[]> {
-  const resp = await fetch(`${API_DOMAIN}/drinkstyle`)
+  const resp = await fetch(`${API_DOMAIN}/options/drinkstyle`)
   if (!resp.ok) throw new Error(`API error: ${resp.status}`)
   return resp.json()
 }
@@ -114,13 +61,13 @@ export async function directPrint(text: string): Promise<{ ok: boolean; status: 
 // textvariant.py
 export async function pickBestTextVariant(params: { main_dish_text_id: number, side_dish_media_id: number, drink_style_id: number }): Promise<TextVariant> {
   const q = new URLSearchParams(params as any).toString()
-  const resp = await fetch(`${API_DOMAIN}/pick-best?${q}`)
+  const resp = await fetch(`${API_DOMAIN}/textvariant/pick-best?${q}`)
   if (!resp.ok) throw new Error(`API error: ${resp.status}`)
   return resp.json()
 }
 
 export async function getTextVariant(item_id: number): Promise<TextVariant> {
-  const resp = await fetch(`${API_DOMAIN}/${item_id}`)
+  const resp = await fetch(`${API_DOMAIN}/textvariant/${item_id}`)
   if (!resp.ok) throw new Error(`API error: ${resp.status}`)
   return resp.json()
 }
