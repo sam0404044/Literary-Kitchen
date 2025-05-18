@@ -18,11 +18,12 @@
     - 將 QRCode Reader、欄位群組、退出按鈕等區塊模組化為單獨 Vue component
     - 拆分樣式至獨立 CSS/SCSS 或 <style> 區塊
 
-- [ ] 5. 整合 Sentry 前端錯誤追蹤
+- [x] 5. 整合 Sentry 前端錯誤追蹤
     - 安裝 @sentry/vue
     - 在 main.ts 初始化 Sentry，支援環境變數 DSN
 
 - [ ] 6. 導入 API service 與 mock 機制
+    - API_DOMAIN 由 .env 檔案中取得
     - 將 API 呼叫封裝於 services/
     - 建立 __mocks__/ 方便單元測試時替換
 

@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@sentry/tracing": "^7.120.3",
+    "@sentry/vue": "^9.19.0",
     "html5-qrcode": "^2.3.8",
     "pinia": "^3.0.2",
     "vue": "^3.5.13"
