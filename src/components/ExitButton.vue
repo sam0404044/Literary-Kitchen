@@ -8,7 +8,7 @@ const onExit = () => {
     // 觸發父元件的重置事件
     emit("resetAll");
   }
-}
+};
 const emit = defineEmits(["resetAll"]);
 </script>
 
@@ -26,7 +26,7 @@ const emit = defineEmits(["resetAll"]);
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;

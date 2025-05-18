@@ -10,10 +10,14 @@
 </template>
 
 <script setup lang="ts">
-import FlavorColumn from './FlavorColumn.vue'
+import FlavorColumn from "./FlavorColumn.vue";
 defineProps<{
-  columns: Array<{ type: string, title: string, items: Array<{ name: string, flash?: boolean }> }>
-}>()
+  columns: Array<{
+    type: string;
+    title: string;
+    items: Array<{ name: string; flash?: boolean }>;
+  }>;
+}>();
 </script>
 
 <style scoped>

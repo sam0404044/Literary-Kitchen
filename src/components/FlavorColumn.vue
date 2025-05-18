@@ -2,7 +2,12 @@
   <div class="column">
     <h3>{{ title }}</h3>
     <div v-if="items.length === 0" class="placeholder">尚未掃描</div>
-    <div v-for="item in items" :key="item.name" class="item" :class="{flash: item.flash}">
+    <div
+      v-for="item in items"
+      :key="item.name"
+      class="item"
+      :class="{ flash: item.flash }"
+    >
       {{ item.name }}
     </div>
   </div>
@@ -10,9 +15,9 @@
 
 <script setup lang="ts">
 defineProps<{
-  title: string
-  items: Array<{ name: string, flash?: boolean }>
-}>()
+  title: string;
+  items: Array<{ name: string; flash?: boolean }>;
+}>();
 </script>
 
 <style scoped>
@@ -44,7 +49,7 @@ defineProps<{
   border: 1px solid #d99977;
   font-weight: bold;
   text-align: center;
-  box-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
 }
 .item.flash {
   animation: flash 3s ease-in-out;
@@ -55,8 +60,14 @@ defineProps<{
   font-style: italic;
 }
 @keyframes flash {
-  0% { background-color: #a84040; }
-  50% { background-color: #b33838; }
-  100% { background-color: #b66756; }
+  0% {
+    background-color: #a84040;
+  }
+  50% {
+    background-color: #b33838;
+  }
+  100% {
+    background-color: #b66756;
+  }
 }
 </style>

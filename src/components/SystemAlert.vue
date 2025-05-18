@@ -7,15 +7,15 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits } from "vue";
 
 defineProps<{
-  show: boolean
-  message: string
-  type?: 'error' | 'warning' | 'info' | 'success'
-}>()
+  show: boolean;
+  message: string;
+  type?: "error" | "warning" | "info" | "success";
+}>();
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(["close"]);
 </script>
 
 <style scoped>
@@ -29,7 +29,7 @@ const emit = defineEmits(['close'])
   padding: 12px 20px;
   margin: 14px auto;
   max-width: 90vw;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
   font-size: 1.08em;
   position: relative;
   z-index: 1002;

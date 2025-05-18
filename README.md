@@ -8,30 +8,34 @@
 - TypeScript：5.8.3
 
 > 如需安裝指定版本 Vite 或 TypeScript，可執行：
+>
 > ```sh
 > npm install vite@6.3.5 typescript@5.8.3 --save-dev
 > ```
 
 ### 安裝依賴
+
 ```sh
 npm install
 ```
 
 ### 啟動開發伺服器
+
 ```sh
 npm run dev
 ```
 
 ### 建置正式版
+
 ```sh
 npm run build
 ```
+
 產出於 `dist/` 目錄。
 
-
 ### 型別管理
-- 所有 Backend API interface 集中於 `src/services/api-types.ts`，如需擴充或修改 schema，請統一於此檔案維護。
 
+- 所有 Backend API interface 集中於 `src/services/api-types.ts`，如需擴充或修改 schema，請統一於此檔案維護。
 
 ## ADR（Architecture Decision Record）
 
@@ -42,4 +46,3 @@ npm run build
 - 只有當 options 列表中存在該 value，才會將該選項 select 到 state，否則顯示錯誤訊息。
 - 此設計可避免 QR code value 不可控時的資料不一致問題，確保所有選擇皆有後端資料對應。
 - 若 options 有異動，前端可透過 fetchOptions 重新拉取。
-
