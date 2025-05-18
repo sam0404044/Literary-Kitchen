@@ -38,7 +38,12 @@
   - [x] DEV: 使用 Vite dev server 的 proxy 功能
   - [ ] PROD: 使用 Nginx 反向代理
 
-- [ ] 7. 撰寫單元測試（Vitest + Vue Test Utils）
+- [ ] 6-2. QR Code 相機測試
+
+  - [ ] 檢查相機權限
+  - [ ] 檢查相機是否正常運作
+
+- [x] 7. 撰寫單元測試（Vitest + Vue Test Utils）
 
   - [x] 安裝 Vitest、@vue/test-utils
   - [x] 建立 `tests/unit/` 目錄與 Vitest 設定檔
@@ -50,10 +55,6 @@
   - [x] mock API service 行為
   - [x] 整合 CI 測試指令（如 npm run test:unit）
 
-- [ ] 8. 驗證與優化
-  - 執行 lint、format、單元測試，確保專案可正常運作
-  - 檢查 Sentry 是否正常上報錯誤
-
----
-
-如有新需求或調整，請於本文件補充。
+- [x] 8. 驗證與優化
+  - [x] 執行 lint、format、單元測試，確保專案可正常運作
+  - [ ] 檢查 Sentry 是否正常上報錯誤
