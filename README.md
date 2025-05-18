@@ -1,5 +1,36 @@
-# -Literary-Kitchen
-台北文學糧倉的數位策展，掃描你的文學風味，每一種類型都是一種角色與味覺的交會。
+# Literary Kitchen Frontend
+
+## 建議開發環境
+
+- Node.js 18.x 或 20.x（建議 LTS 版本）
+- npm：隨 Node.js 版本安裝，建議 9.x 以上
+- Vite：6.3.5
+- TypeScript：5.8.3
+
+> 如需安裝指定版本 Vite 或 TypeScript，可執行：
+> ```sh
+> npm install vite@6.3.5 typescript@5.8.3 --save-dev
+> ```
+
+### 安裝依賴
+```sh
+npm install
+```
+
+### 啟動開發伺服器
+```sh
+npm run dev
+```
+
+### 建置正式版
+```sh
+npm run build
+```
+產出於 `dist/` 目錄。
+
+
+### 型別管理
+- 所有 Backend API interface 集中於 `src/services/api-types.ts`，如需擴充或修改 schema，請統一於此檔案維護。
 
 
 ## ADR（Architecture Decision Record）
