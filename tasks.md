@@ -6,11 +6,11 @@
     - 使用 Vite 建立新專案，選擇 Vue 3 + TypeScript 模板
     - 移除預設範例檔案，準備導入現有內容
 
-- [ ] 2. 導入 eslint 與 auto-formatter（Prettier）
+- [x] 2. 導入 eslint 與 auto-formatter（Prettier）
     - 安裝 eslint、prettier 及相關 Vue/TypeScript 插件
     - 設定 lint 與格式化規則
 
-- [ ] 3. 導入 Pinia 狀態管理
+- [x] 3. 導入 Pinia 狀態管理
     - 安裝 Pinia
     - 設定專案入口與基本 store 架構
 
