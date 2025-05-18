@@ -27,11 +27,16 @@
   - 安裝 @sentry/vue
   - 在 main.ts 初始化 Sentry，支援環境變數 DSN
 
-- [ ] 6. 導入 API service 與 mock 機制
+- [x] 6. 導入 API service 與 mock 機制
 
   - API_DOMAIN 由 .env 檔案中取得
   - 將 API 呼叫封裝於 services/
   - 建立 **mocks**/ 方便單元測試時替換
+
+- [ ] 6-1. 處理 CORS 問題
+
+  - [x] DEV: 使用 Vite dev server 的 proxy 功能
+  - [ ] PROD: 使用 Nginx 反向代理
 
 - [ ] 7. 撰寫單元測試（Vitest + Vue Test Utils）
 
