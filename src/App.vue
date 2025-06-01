@@ -50,6 +50,10 @@ function resetAll() {
 function closeAlert() {
   appState.setError(null);
 }
+
+function handleQrError(msg: string) {
+  appState.setError(msg);
+}
 </script>
 
 <template>
@@ -89,7 +93,7 @@ function closeAlert() {
     >
       掃描你的文學風味，每一種類型都是一種角色與味覺的交會。
     </p>
-    <QrReader @on-scan="handleScan" />
+    <QrReader @on-scan="handleScan" @on-error="handleQrError" />
     <FlavorColumns :columns="columns" />
   </div>
 </template>

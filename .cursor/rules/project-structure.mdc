@@ -1,0 +1,40 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Literary-Kitchen 專案結構導覽
+
+本專案的主要程式碼皆位於 [src/](mdc:src/) 目錄下，結構如下：
+
+## 1. 主要檔案與資料夾
+- [App.vue](mdc:src/App.vue)：主應用元件，組合各子元件，管理全域 alert（error 狀態）。
+- [main.ts](mdc:src/main.ts)：Vue 入口，註冊 Pinia 狀態管理與 Sentry。
+- [style.css](mdc:src/style.css)：全域樣式。
+- [vite-env.d.ts](mdc:src/vite-env.d.ts)：型別定義。
+- [assets/](mdc:src/assets/)：靜態資源（如圖片）。
+- [components/](mdc:src/components/)：前端元件。
+- [services/](mdc:src/services/)：API 與型別、mock 服務。
+- [store/](mdc:src/store/)：Pinia 狀態管理。
+
+## 2. components/
+- [QrReader.vue](mdc:src/components/QrReader.vue)：QR 掃描元件，emit `onScan` 事件。
+- [FlavorColumn.vue](mdc:src/components/FlavorColumn.vue)、[FlavorColumns.vue](mdc:src/components/FlavorColumns.vue)：顯示菜單選項的元件。
+- [ExitButton.vue](mdc:src/components/ExitButton.vue)：重置按鈕。
+- [SystemAlert.vue](mdc:src/components/SystemAlert.vue)：全域 alert，根據 error 狀態顯示。
+
+## 3. services/
+- [api.ts](mdc:src/services/api.ts)：API 請求。
+- [api-types.ts](mdc:src/services/api-types.ts)：API 型別。
+- [__mocks__/api.ts](mdc:src/services/__mocks__/api.ts)：mock 服務。
+
+## 4. store/
+- [appState.ts](mdc:src/store/appState.ts)：Pinia 狀態，管理選項、選擇、error 狀態等。
+
+---
+
+### 專案工具與全域 alert 機制
+- 全域錯誤訊息（alert）由 `appState.error` 控制，[SystemAlert.vue](mdc:src/components/SystemAlert.vue) 元件負責顯示。
+- 只要將錯誤訊息寫入 `appState.error`，即可觸發 alert。
+- [App.vue](mdc:src/App.vue) 已經將 SystemAlert 放在最外層，並監聽 error 狀態。
+

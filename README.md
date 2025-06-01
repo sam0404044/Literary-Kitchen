@@ -33,6 +33,12 @@ npm run build
 
 產出於 `dist/` 目錄。
 
+### Deploy
+
+```sh
+scp -r dist raspberrypi:/app/frontend/
+```
+
 ### 型別管理
 
 - 所有 Backend API interface 集中於 `src/services/api-types.ts`，如需擴充或修改 schema，請統一於此檔案維護。
