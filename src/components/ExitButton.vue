@@ -5,7 +5,12 @@
 <script setup lang="ts">
 const onExit = () => {
   if (confirm("是否要放棄本次烹飪？")) {
-    // 觸發父元件的重置事件
+    // 清除 localStorage 與 sessionStorage
+    localStorage.clear();
+    sessionStorage.clear();
+    // reload 頁面
+    window.location.reload();
+    // 觸發父元件的重置事件（如有需要）
     emit("resetAll");
   }
 };
