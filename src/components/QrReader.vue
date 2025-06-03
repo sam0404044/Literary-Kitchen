@@ -62,18 +62,26 @@ onBeforeUnmount(() => {
 
 <style scoped>
 #qr-reader {
-  width: 60vw;
-  max-width: 600px;
-  margin: 30px auto;
+  width: 684px;
+  height: 500px;
+  margin: 70px auto 0 256px; 
   display: block;
 }
+
 .status {
   text-align: center;
-  margin-top: 16px;
-  color: #a84040;
+  margin: -49px auto 0 255px;
+  width:690PX;
+  height:40px;
+  
+  color: #FFFFFF;
   font-size: 1.1em;
   font-weight: bold;
-}
+  background-color:#654627;
+  display: flex;
+  align-items: center;     /* 垂直置中 */
+  justify-content: center;
+  }
 #qr-reader video,
 #qr-reader canvas {
   margin: 0 !important;

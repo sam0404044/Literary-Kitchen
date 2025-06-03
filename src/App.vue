@@ -58,47 +58,30 @@ function handleQrError(msg: string) {
 
 <template>
   <div
-    style="
-      position: relative;
-      min-height: 100vh;
-      background: #fcf4f0;
-      color: #4a2b23;
-    "
+    class="app-background"
   >
-    <SystemAlert
-      v-if="error"
-      :show="!!error"
-      :message="error || ''"
-      type="error"
-      @close="closeAlert"
-    />
+   
     <ExitButton @reset-all="resetAll" />
-    <h1
-      style="
-        text-align: center;
-        font-weight: normal;
-        font-size: 1.8em;
-        margin-top: 30px;
-      "
-    >
-      Literary Kitchen
-    </h1>
-    <p
-      style="
-        text-align: center;
-        font-size: 1em;
-        color: #6a4633;
-        margin-top: 5px;
-      "
-    >
-      掃描你的文學風味，每一種類型都是一種角色與味覺的交會。
-    </p>
+ 
     <QrReader @on-scan="handleScan" @on-error="handleQrError" />
     <FlavorColumns :columns="columns" />
+
+
   </div>
 </template>
 
 <style scoped>
+
+.app-background {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/background.jpg'); /* public 資料夾內的圖片用這種寫法 */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

@@ -1,7 +1,12 @@
 <template>
   <div class="column">
-    <h3>{{ title }}</h3>
-    <div v-if="items.length === 0" class="placeholder">尚未掃描</div>
+    <!-- 尚未掃描 -->
+    <div v-if="items.length === 0" class="empty-section">
+      <img src="/A主食_1洋芋片.png" alt="尚未掃描圖片" class="placeholder-image" />
+      <div class="placeholder">尚未掃描</div>
+    </div>
+
+    <!-- 有掃描資料 -->
     <div
       v-for="item in items"
       :key="item.name"
@@ -13,61 +18,33 @@
   </div>
 </template>
 
-<script setup lang="ts">
-defineProps<{
-  title: string;
-  items: Array<{ name: string; flash?: boolean }>;
-}>();
+<script setup>
+defineProps({
+  items: {
+    type: Array,
+    required: true
+  }
+});
 </script>
 
 <style scoped>
-.column {
-  flex: 1;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff1ec;
-  border: 2px solid #d9a88c;
-  min-height: 250px;
-  max-width: 100%;
-  width: 30vw;
-  position: relative;
+.placeholder-image {
+  width: 180px;
+  height: auto;
+  margin: 0 auto 10px;
+  display: block;
 }
-.column h3 {
-  text-align: center;
-  border-bottom: 2px dashed #bb6f51;
-  margin-bottom: 15px;
-  padding-bottom: 5px;
-  font-size: 1.2em;
-  color: #8b3f2c;
-}
-.item {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #fce2d4;
-  border: 1px solid #d99977;
-  font-weight: bold;
-  text-align: center;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
-}
-.item.flash {
-  animation: flash 3s ease-in-out;
-}
+
 .placeholder {
   text-align: center;
-  color: #b79a8a;
-  font-style: italic;
+  margin-top:85px;
+  font-weight: bold;
+  color: #654627;
+  font-size:40px
 }
-@keyframes flash {
-  0% {
-    background-color: #a84040;
-  }
-  50% {
-    background-color: #b33838;
-  }
-  100% {
-    background-color: #b66756;
-  }
+
+.empty-section {
+  text-align: center;
+  padding: 10px;
 }
 </style>

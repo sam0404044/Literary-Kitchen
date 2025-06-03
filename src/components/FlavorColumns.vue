@@ -24,7 +24,8 @@ defineProps<{
 .columns {
   display: flex;
   justify-content: center;
-  padding: 30px;
-  gap: 20px;
+  margin-top: 220px;
+  padding: 40px;
+  gap: 180px;
 }
 </style>

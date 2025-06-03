@@ -12,7 +12,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  /* color: rgba(255, 255, 255, 0.87); */
   /* background-color: #242424; 移除這行，避免覆蓋 body */
 
   font-synthesis: none;
@@ -34,7 +34,7 @@ body {
  font-family: 'Cubic11', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #fcf4f0;
+  /* background-color: #fcf4f0; */
   color: #4a2b23;
   min-width: 320px;
   min-height: 100vh;
