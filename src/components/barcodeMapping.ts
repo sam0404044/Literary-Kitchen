@@ -95,5 +95,8 @@ export function imageToPngPath(option: FoodOption): string | undefined {
     return `/B配餐_${option.id}${option.image}.png`;
   }
   // C 類目前無圖
+  if (option.type === "C") {
+    return option.image;
+  }
   return undefined;
 }

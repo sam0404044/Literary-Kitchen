@@ -6,3 +6,10 @@ export interface FoodOption {
   label: string;
   image: string;
 }
+
+export interface ColumnData {
+  type: "A" | "B" | "C";
+  title: string;
+  label: string;
+  image: string | undefined;
+}

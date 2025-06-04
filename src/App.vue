@@ -6,15 +6,16 @@ import QrReader from "./components/QrReader.vue";
 import ExitButton from "./components/ExitButton.vue";
 import FlavorColumns from "./components/FlavorColumns.vue";
 import { imageToPngPath } from "./components/barcodeMapping";
+import type { ColumnData } from "./services/api-types";
 
 const appState = useAppStateStore();
 const { selectedMainDish, selectedSideDish, selectedDrinkStyle } =
   storeToRefs(appState);
 
-const columns = computed(() => {
+const columns = computed<ColumnData[]>(() => {
   const cols = [
     {
-      type: "A",
+      type: "A" as "A",
       title: "主食",
       label: selectedMainDish.value ? selectedMainDish.value.label : "尚未掃描",
       image: selectedMainDish.value
@@ -22,7 +23,7 @@ const columns = computed(() => {
         : undefined,
     },
     {
-      type: "B",
+      type: "B" as "B",
       title: "配餐",
       label: selectedSideDish.value ? selectedSideDish.value.label : "尚未掃描",
       image: selectedSideDish.value
@@ -30,7 +31,7 @@ const columns = computed(() => {
         : undefined,
     },
     {
-      type: "C",
+      type: "C" as "C",
       title: "飲品",
       label: selectedDrinkStyle.value
         ? selectedDrinkStyle.value.label
@@ -110,8 +111,8 @@ onUnmounted(() => {
 
 <style scoped>
 .app-background {
-  width: 100vw;
-  height: 100vh;
+  width: 1200px;
+  height: 1920px;
   background-image: url("/background.jpg"); /* public 資料夾內的圖片用這種寫法 */
   background-size: cover;
   background-repeat: no-repeat;

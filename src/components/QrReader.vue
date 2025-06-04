@@ -65,22 +65,22 @@ onBeforeUnmount(() => {
 #qr-reader {
   width: 684px;
   height: 500px;
-  margin: 70px auto 0 256px;
+  margin: 50px auto 0 auto;
+  transform: translateX(-6px);
   display: block;
 }
 
 .status {
   text-align: center;
-  position:absolute;
-  top:528px;
-  left:407px;
-
+  position: absolute;
+  top: 529px;
+  left: 407px;
 
   width: 375px;
   height: 40px;
 
   color: #ffffff;
-  font-size: 1.1em;
+  font-size: 2em;
   font-weight: bold;
   background-color: #654627;
   display: flex;
