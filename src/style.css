@@ -1,10 +1,9 @@
 @font-face {
-  font-family: 'Cubic11';
-  src: url('./assets/fonts/Cubic_11.ttf') format('truetype');
+  font-family: "Cubic11";
+  src: url("./assets/fonts/Cubic_11.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
-
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -31,7 +30,7 @@ a:hover {
 }
 
 body {
- font-family: 'Cubic11', sans-serif;
+  font-family: "Cubic11", sans-serif;
   margin: 0;
   padding: 0;
   /* background-color: #fcf4f0; */

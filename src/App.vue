@@ -1,54 +1,54 @@
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useAppStateStore } from "./store/appState";
 import QrReader from "./components/QrReader.vue";
 import ExitButton from "./components/ExitButton.vue";
 import FlavorColumns from "./components/FlavorColumns.vue";
-import SystemAlert from "./components/SystemAlert.vue";
+import { imageToPngPath } from "./components/barcodeMapping";
 
 const appState = useAppStateStore();
-const { selectedMainDish, selectedSideDish, selectedDrinkStyle, error } =
+const { selectedMainDish, selectedSideDish, selectedDrinkStyle } =
   storeToRefs(appState);
 
-onMounted(() => {
-  appState.fetchOptions();
+const columns = computed(() => {
+  const cols = [
+    {
+      type: "A",
+      title: "主食",
+      label: selectedMainDish.value ? selectedMainDish.value.label : "尚未掃描",
+      image: selectedMainDish.value
+        ? imageToPngPath(selectedMainDish.value)
+        : undefined,
+    },
+    {
+      type: "B",
+      title: "配餐",
+      label: selectedSideDish.value ? selectedSideDish.value.label : "尚未掃描",
+      image: selectedSideDish.value
+        ? imageToPngPath(selectedSideDish.value)
+        : undefined,
+    },
+    {
+      type: "C",
+      title: "飲品",
+      label: selectedDrinkStyle.value
+        ? selectedDrinkStyle.value.label
+        : "尚未掃描",
+      image: selectedDrinkStyle.value
+        ? imageToPngPath(selectedDrinkStyle.value)
+        : undefined,
+    },
+  ];
+  return cols;
 });
 
-const columns = computed(() => [
-  {
-    type: "A",
-    title: "主食",
-    items: selectedMainDish.value
-      ? [{ name: selectedMainDish.value.main_dish, flash: false }]
-      : [],
-  },
-  {
-    type: "B",
-    title: "配餐",
-    items: selectedSideDish.value
-      ? [{ name: selectedSideDish.value.side_dish, flash: false }]
-      : [],
-  },
-  {
-    type: "C",
-    title: "飲品",
-    items: selectedDrinkStyle.value
-      ? [{ name: selectedDrinkStyle.value.drink, flash: false }]
-      : [],
-  },
-]);
-
-function handleScan(obj: { type: string; name: string }) {
-  appState.selectByQr(obj.type, obj.name);
+function handleScan(payload: { code: string; format: string }) {
+  appState.selectByQr(payload.code);
 }
 
 function resetAll() {
   appState.reset();
-}
-
-function closeAlert() {
-  appState.setError(null);
 }
 
 function handleQrError(msg: string) {
@@ -57,25 +57,19 @@ function handleQrError(msg: string) {
 </script>
 
 <template>
-  <div
-    class="app-background"
-  >
-   
+  <div class="app-background">
     <ExitButton @reset-all="resetAll" />
- 
+
     <QrReader @on-scan="handleScan" @on-error="handleQrError" />
     <FlavorColumns :columns="columns" />
-
-
   </div>
 </template>
 
 <style scoped>
-
 .app-background {
   width: 100vw;
   height: 100vh;
-  background-image: url('/background.jpg'); /* public 資料夾內的圖片用這種寫法 */
+  background-image: url("/background.jpg"); /* public 資料夾內的圖片用這種寫法 */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

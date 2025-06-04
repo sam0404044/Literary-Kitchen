@@ -1,12 +1,7 @@
 import { defineStore } from "pinia";
-import type {
-  MainDishText,
-  SideDishMedia,
-  DrinkStyle,
-  TextVariant,
-  PrintJob,
-  BarcodeMapping,
-} from "../services/api-types";
+import type { FoodOption } from "../services/api-types";
+import { barcodeMapping } from "../components/barcodeMapping";
+import { printCountPickBest } from "../services/api";
 
 export type AppStateStatus =
   | "idle"
@@ -17,18 +12,10 @@ export type AppStateStatus =
 
 export interface AppState {
   status: AppStateStatus;
-  mainDishOptions: MainDishText[];
-  sideDishOptions: SideDishMedia[];
-  drinkStyleOptions: DrinkStyle[];
-  selectedMainDish: MainDishText | null;
-  selectedSideDish: SideDishMedia | null;
-  selectedDrinkStyle: DrinkStyle | null;
-  textVariant: TextVariant | null;
-  printJob: PrintJob | null;
-  printerStatus: { status: string; description: string } | null;
+  selectedMainDish: FoodOption | null;
+  selectedSideDish: FoodOption | null;
+  selectedDrinkStyle: FoodOption | null;
   scannedBarcode: string | null;
-  barcodeMapping: BarcodeMapping | null;
-  barcodeMappings?: BarcodeMapping[];
   autoResetCountdown: number;
   loading: boolean;
   error: string | null;
@@ -37,18 +24,10 @@ export interface AppState {
 export const useAppStateStore = defineStore("appState", {
   state: (): AppState => ({
     status: "idle",
-    mainDishOptions: [],
-    sideDishOptions: [],
-    drinkStyleOptions: [],
     selectedMainDish: null,
     selectedSideDish: null,
     selectedDrinkStyle: null,
-    textVariant: null,
-    printJob: null,
-    printerStatus: null,
     scannedBarcode: null,
-    barcodeMapping: null,
-    barcodeMappings: [],
     autoResetCountdown: 60,
     loading: false,
     error: null,
@@ -63,76 +42,56 @@ export const useAppStateStore = defineStore("appState", {
     },
   },
   actions: {
-    async fetchOptions() {
-      this.loading = true;
-      try {
-        const [main, side, drink] = await Promise.all([
-          (await import("../services/api")).getMainDishList(),
-          (await import("../services/api")).getSideDishList(),
-          (await import("../services/api")).getDrinkStyleList(),
-        ]);
-        this.mainDishOptions = main;
-        this.sideDishOptions = side;
-        this.drinkStyleOptions = drink;
-        this.error = null;
-      } catch (e) {
-        this.error = "取得選項失敗";
-      } finally {
-        this.loading = false;
-      }
-    },
-    selectByQr(type: string, value: string) {
+    selectByQr(value: string) {
       this.error = null;
-      const id = Number(value);
-      if (type === "A") {
-        const found = this.mainDishOptions.find(
-          (opt: MainDishText) => opt.id === id,
-        );
-        if (found) {
-          this.selectedMainDish = found;
-        } else {
-          this.error = "找不到對應主食";
-        }
-      } else if (type === "B") {
-        const found = this.sideDishOptions.find(
-          (opt: SideDishMedia) => opt.id === id,
-        );
-        if (found) {
-          this.selectedSideDish = found;
-        } else {
-          this.error = "找不到對應配餐";
-        }
-      } else if (type === "C") {
-        const found = this.drinkStyleOptions.find(
-          (opt: DrinkStyle) => opt.id === id,
-        );
-        if (found) {
-          this.selectedDrinkStyle = found;
-        } else {
-          this.error = "找不到對應飲品";
-        }
+      const option = barcodeMapping[value];
+      if (!option) {
+        this.error = `無效條碼：${value}`;
+        return;
       }
-      // 狀態切換
+      if (option.type === "A") {
+        this.selectedMainDish = option;
+        this.error = "主食已選擇";
+      } else if (option.type === "B") {
+        this.selectedSideDish = option;
+        this.error = "配餐已選擇";
+      } else if (option.type === "C") {
+        this.selectedDrinkStyle = option;
+        this.error = "飲品已選擇";
+      } else {
+        this.error = `未知類型條碼：${value}`;
+        return;
+      }
       if (
         this.selectedMainDish &&
         this.selectedSideDish &&
         this.selectedDrinkStyle
       ) {
         this.status = "readyToPrint";
+        this.print({
+          a: this.selectedMainDish,
+          b: this.selectedSideDish,
+          c: this.selectedDrinkStyle,
+        });
       } else {
         this.status = "selecting";
       }
+    },
+    print(options: { a: FoodOption; b: FoodOption; c: FoodOption }) {
+      printCountPickBest(options).then((res) => {
+        if (res.ok) {
+          this.status = "printed";
+        } else {
+          this.error = "列印失敗";
+        }
+      });
     },
     reset() {
       this.status = "idle";
       this.selectedMainDish = null;
       this.selectedSideDish = null;
       this.selectedDrinkStyle = null;
-      this.textVariant = null;
-      this.printJob = null;
-      this.printerStatus = null;
       this.scannedBarcode = null;
-      this.barcodeMapping = null;
       this.autoResetCountdown = 60;
       this.loading = false;
       this.error = null;
@@ -140,32 +99,17 @@ export const useAppStateStore = defineStore("appState", {
     setStatus(status: AppStateStatus) {
       this.status = status;
     },
-    setMainDish(mainDish: MainDishText | null) {
+    setMainDish(mainDish: FoodOption | null) {
       this.selectedMainDish = mainDish;
     },
-    setSideDish(sideDish: SideDishMedia | null) {
+    setSideDish(sideDish: FoodOption | null) {
       this.selectedSideDish = sideDish;
     },
-    setDrinkStyle(drinkStyle: DrinkStyle | null) {
+    setDrinkStyle(drinkStyle: FoodOption | null) {
       this.selectedDrinkStyle = drinkStyle;
-    },
-    setTextVariant(tv: TextVariant | null) {
-      this.textVariant = tv;
-    },
-    setPrintJob(job: PrintJob | null) {
-      this.printJob = job;
-    },
-    setPrinterStatus(status: { status: string; description: string } | null) {
-      this.printerStatus = status;
     },
     setScannedBarcode(barcode: string | null) {
       this.scannedBarcode = barcode;
-    },
-    setBarcodeMapping(mapping: BarcodeMapping | null) {
-      this.barcodeMapping = mapping;
-    },
-    setBarcodeMappings(mappings: BarcodeMapping[]) {
-      this.barcodeMappings = mappings;
     },
     setLoading(loading: boolean) {
       this.loading = loading;

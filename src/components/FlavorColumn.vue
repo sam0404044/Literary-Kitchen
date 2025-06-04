@@ -1,30 +1,31 @@
 <template>
   <div class="column">
     <!-- 尚未掃描 -->
-    <div v-if="items.length === 0" class="empty-section">
-      <img src="/A主食_1洋芋片.png" alt="尚未掃描圖片" class="placeholder-image" />
+    <div v-if="label === '尚未掃描'" class="empty-section">
       <div class="placeholder">尚未掃描</div>
     </div>
 
     <!-- 有掃描資料 -->
-    <div
-      v-for="item in items"
-      :key="item.name"
-      class="item"
-      :class="{ flash: item.flash }"
-    >
-      {{ item.name }}
+    <div v-if="label">
+      <img
+        v-if="image"
+        :src="image"
+        alt="尚未掃描圖片"
+        class="placeholder-image"
+      />
+      <div :key="label" class="item">
+        {{ label }}
+      </div>
     </div>
   </div>
 </template>
 
-<script setup>
-defineProps({
-  items: {
-    type: Array,
-    required: true
-  }
-});
+<script setup lang="ts">
+defineProps<{
+  label: string;
+  image?: string;
+  title?: string;
+}>();
 </script>
 
 <style scoped>
@@ -37,10 +38,10 @@ defineProps({
 
 .placeholder {
   text-align: center;
-  margin-top:85px;
+  margin-top: 85px;
   font-weight: bold;
   color: #654627;
-  font-size:40px
+  font-size: 40px;
 }
 
 .empty-section {

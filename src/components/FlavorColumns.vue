@@ -4,7 +4,8 @@
       v-for="col in columns"
       :key="col.type"
       :title="col.title"
-      :items="col.items"
+      :label="col.label"
+      :image="col.image"
     />
   </div>
 </template>
@@ -15,7 +16,8 @@ defineProps<{
   columns: Array<{
     type: string;
     title: string;
-    items: Array<{ name: string; flash?: boolean }>;
+    label: string;
+    image: string | undefined;
   }>;
 }>();
 </script>

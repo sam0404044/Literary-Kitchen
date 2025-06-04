@@ -37,10 +37,11 @@ onMounted(() => {
             isCooldown = true;
             setTimeout(() => (isCooldown = false), 5000);
             status.value = `已偵測到條碼：${result.getText()} (${result.getBarcodeFormat()})`;
-            emit("onScan", {
+            const payload = {
               code: result.getText(),
               format: result.getBarcodeFormat(),
-            });
+            };
+            emit("onScan", payload);
           } else if (err && (!err.name || err.name !== "NotFoundException")) {
             status.value = "解析條碼失敗";
             emit("onError", "解析條碼失敗");
@@ -64,24 +65,24 @@ onBeforeUnmount(() => {
 #qr-reader {
   width: 684px;
   height: 500px;
-  margin: 70px auto 0 256px; 
+  margin: 70px auto 0 256px;
   display: block;
 }
 
 .status {
   text-align: center;
   margin: -49px auto 0 255px;
-  width:690PX;
-  height:40px;
-  
-  color: #FFFFFF;
+  width: 690px;
+  height: 40px;
+
+  color: #ffffff;
   font-size: 1.1em;
   font-weight: bold;
-  background-color:#654627;
+  background-color: #654627;
   display: flex;
-  align-items: center;     /* 垂直置中 */
+  align-items: center; /* 垂直置中 */
   justify-content: center;
-  }
+}
 #qr-reader video,
 #qr-reader canvas {
   margin: 0 !important;
