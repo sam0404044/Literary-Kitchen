@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useAppStateStore } from "./store/appState";
 import QrReader from "./components/QrReader.vue";
@@ -54,14 +54,57 @@ function resetAll() {
 function handleQrError(msg: string) {
   appState.setError(msg);
 }
+
+const isIdle = ref(false);
+let idleTimer: number | undefined;
+const IDLE_TIMEOUT = 10 * 60 * 1000; // 10 分鐘
+
+function resetIdleTimer() {
+  isIdle.value = false;
+  if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    isIdle.value = true;
+  }, IDLE_TIMEOUT);
+}
+
+function setupIdleListeners() {
+  const events = ["mousemove", "mousedown", "touchstart", "keydown", "click"];
+  events.forEach((evt) => {
+    window.addEventListener(evt, resetIdleTimer, true);
+  });
+}
+
+function removeIdleListeners() {
+  const events = ["mousemove", "mousedown", "touchstart", "keydown", "click"];
+  events.forEach((evt) => {
+    window.removeEventListener(evt, resetIdleTimer, true);
+  });
+}
+
+onMounted(() => {
+  setupIdleListeners();
+  resetIdleTimer();
+});
+
+onUnmounted(() => {
+  removeIdleListeners();
+  if (idleTimer) clearTimeout(idleTimer);
+});
 </script>
 
 <template>
   <div class="app-background">
-    <ExitButton @reset-all="resetAll" />
-
-    <QrReader @on-scan="handleScan" @on-error="handleQrError" />
-    <FlavorColumns :columns="columns" />
+    <template v-if="isIdle">
+      <img
+        src="/background.jpg"
+        style="width: 100vw; height: 100vh; object-fit: cover; display: block"
+      />
+    </template>
+    <template v-else>
+      <ExitButton @reset-all="resetAll" />
+      <QrReader @on-scan="handleScan" @on-error="handleQrError" />
+      <FlavorColumns :columns="columns" />
+    </template>
   </div>
 </template>
 
