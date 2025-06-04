@@ -71,8 +71,12 @@ onBeforeUnmount(() => {
 
 .status {
   text-align: center;
-  margin: -49px auto 0 255px;
-  width: 690px;
+  position:absolute;
+  top:528px;
+  left:407px;
+
+
+  width: 375px;
   height: 40px;
 
   color: #ffffff;
