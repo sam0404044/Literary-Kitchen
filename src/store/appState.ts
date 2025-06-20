@@ -79,6 +79,7 @@ export const useAppStateStore = defineStore("appState", {
     },
     print(options: { a: FoodOption; b: FoodOption; c: FoodOption }) {
       printCountPickBest(options).then((res) => {
+        this.reset();
         if (res.ok) {
           this.status = "printed";
         } else {

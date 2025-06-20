@@ -58,7 +58,7 @@ function handleQrError(msg: string) {
 
 const isIdle = ref(false);
 let idleTimer: number | undefined;
-const IDLE_TIMEOUT = 10 * 60 * 1000; // 10 分鐘
+const IDLE_TIMEOUT = 5 * 60 * 1000; // 5 分鐘
 
 function resetIdleTimer() {
   isIdle.value = false;
@@ -97,7 +97,7 @@ onUnmounted(() => {
   <div class="app-background">
     <template v-if="isIdle">
       <img
-        src="/background.jpg"
+        src="/idle-20250605.jpg"
         style="width: 100vw; height: 100vh; object-fit: cover; display: block"
       />
     </template>
